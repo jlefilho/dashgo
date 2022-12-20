@@ -36,7 +36,7 @@ const options = {
     },
     xaxis: {
         axisBorder: {
-            color: theme.colors.gray[600]
+            color: theme.colors.pink[600]
         },
         axisTicks: {
             show: true,
