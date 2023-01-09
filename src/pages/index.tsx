@@ -5,12 +5,7 @@ import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Input } from '../components/Form/Input'
 
-type SignInFormData = {
-  email: string;
-  password: string;
-}
-
-interface CreateUserFormData {
+interface UserFormData {
   name: string;
   email: string;
   password: string;
@@ -23,13 +18,13 @@ const signInFormSchema = yup.object().shape({
 })
 
 export default function Home() {
-  const { register, handleSubmit, formState } = useForm<CreateUserFormData>({
+  const { register, handleSubmit, formState } = useForm<UserFormData>({
     resolver: yupResolver(signInFormSchema)
   })
 
   const { errors } = formState
 
-  const handleSignIn: SubmitHandler<CreateUserFormData> = async (values: SignInFormData) => {
+  const handleSignIn: SubmitHandler<UserFormData> = async (values: UserFormData) => {
 
     await new Promise(resolve => setTimeout(resolve, 2000))
     console.log(values)
