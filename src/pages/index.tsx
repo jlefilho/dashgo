@@ -1,7 +1,41 @@
-import { Flex, Button, Stack, FormLabel, FormControl } from '@chakra-ui/react'
+import { Flex, Button, Stack } from '@chakra-ui/react'
+import { useForm } from 'react-hook-form'
+import { SubmitHandler } from 'react-hook-form/dist/types/form';
+import * as yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup'
 import { Input } from '../components/Form/Input'
 
+type SignInFormData = {
+  email: string;
+  password: string;
+}
+
+interface CreateUserFormData {
+  name: string;
+  email: string;
+  password: string;
+  password_confirmation: string;
+}
+
+const signInFormSchema = yup.object().shape({
+  email: yup.string().required('E-mail obrigatório').email('E-mail inválido'),
+  password: yup.string().required('Senha obrigatória')
+})
+
 export default function Home() {
+  const { register, handleSubmit, formState } = useForm<CreateUserFormData>({
+    resolver: yupResolver(signInFormSchema)
+  })
+
+  const { errors } = formState
+
+  const handleSignIn: SubmitHandler<CreateUserFormData> = async (values: SignInFormData) => {
+
+    await new Promise(resolve => setTimeout(resolve, 2000))
+    console.log(values)
+
+  }
+
   return (
     <Flex
       w="100vw"
@@ -17,10 +51,21 @@ export default function Home() {
         p="8"
         borderRadius={8}
         flexDir="column"
+        onSubmit={handleSubmit(handleSignIn)}
       >
         <Stack spacing={4}>
-          <Input name='email' label='E-mail' type='email' />
-          <Input name='password' label='Senha' type='password' />          
+          <Input 
+            label='E-mail'
+            type='email'
+            error={errors.email}
+            {...register('email')} 
+          />
+          <Input 
+            label='Senha'
+            type='password'
+            error={errors.password}
+            {...register('password')}
+          />          
         </Stack>
 
         <Button
@@ -28,6 +73,7 @@ export default function Home() {
           mt='6'
           colorScheme='pink'
           size='lg'
+          isLoading={formState.isSubmitting}
         >
           Entrar
         </Button>
