@@ -44,14 +44,18 @@ export function Pagination({
             spacing={6}
         >
             <Box>
-                <strong>0</strong> - <strong>10</strong> de <strong>100</strong>
+                <strong>{(currentPage * registerPerPage) - registerPerPage + 1}</strong> - <strong>{currentPage * registerPerPage}</strong> de <strong>{totalCountOfRegisters}</strong>
             </Box>
 
             <HStack spacing={2}>
 
                 {currentPage > (1 + siblingsCount) && (
                     <>
-                        <PaginationItem pageNumber={1}></PaginationItem>
+                        <PaginationItem
+                            onPageChange={onPageChange}
+                            pageNumber={1}
+                        />
+
                         { currentPage > (2 + siblingsCount ) && (
                             <Text color='gray.300' w='8' textAlign='center'>
                                 ...
@@ -61,13 +65,29 @@ export function Pagination({
                 )}
 
                 {previousPages.length > 0 && previousPages.map(page => {
-                    return (<PaginationItem pageNumber={page} key={page} />)
+                    return (
+                        <PaginationItem
+                            key={page} 
+                            onPageChange={onPageChange}
+                            pageNumber={page}                        
+                        />
+                    )
                 })}
 
-                <PaginationItem pageNumber={currentPage} isCurrent />
+                <PaginationItem
+                    onPageChange={onPageChange}
+                    pageNumber={currentPage}
+                    isCurrent                
+                />
 
                 {nextPages.length > 0 && nextPages.map(page => {
-                    return (<PaginationItem pageNumber={page} key={page} />)
+                    return (
+                        <PaginationItem
+                         key={page}
+                            onPageChange={onPageChange}
+                            pageNumber={page}
+                        />
+                    )
                 })}
 
                 {(currentPage + siblingsCount) < lastPage && (
@@ -77,7 +97,11 @@ export function Pagination({
                                 ...
                             </Text>
                         )}
-                        <PaginationItem pageNumber={lastPage}></PaginationItem>
+
+                        <PaginationItem
+                            onPageChange={onPageChange}
+                            pageNumber={lastPage}
+                        />
                     </>
                 )}
 

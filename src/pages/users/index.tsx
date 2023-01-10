@@ -1,5 +1,6 @@
 import { Box, Button, Checkbox, Flex, Heading, Icon, Table, Tbody, Td, Th, Thead, Tr, Text, useBreakpointValue, Spinner } from "@chakra-ui/react";
 import Link from "next/link";
+import { useState } from "react";
 import { RiAddLine, RiPencilLine } from "react-icons/ri";
 
 import { Header } from "../../components/Header";
@@ -15,7 +16,8 @@ export type User = {
 }
 
 export default function UserList() {
-    const { data, isLoading, isFetching, error } = useUsers()
+    const [page, setPage] = useState(1)
+    const { data, isLoading, isFetching, error } = useUsers(page)
 
     const isWideVersion =  useBreakpointValue({
         base: false,
@@ -60,7 +62,7 @@ export default function UserList() {
                         <Flex justify='center'>
                             <Text>Falha ao obter dados dos usuários.</Text>
                         </Flex>
-                    ): (
+                    ) : (
                         <>
                             {/* TABLE */}
                             <Table colorScheme='whiteAlpha'>
@@ -75,7 +77,7 @@ export default function UserList() {
                                     </Tr>
                                 </Thead>
                                 <Tbody>
-                                    {data?.map((user: User) => {
+                                    {data?.users.map((user: User) => {
                                         return (
                                             <Tr key={user.id}>
                                                 <Td px={["4", "4", "6"]}>
@@ -114,9 +116,9 @@ export default function UserList() {
                             </Table>
 
                             <Pagination
-                                totalCountOfRegisters={200}
-                                currentPage={19}
-                                onPageChange={() => {}}
+                                totalCountOfRegisters={data!.totalCount}
+                                currentPage={page}
+                                onPageChange={setPage}
                             />
                         </>
                     )}
