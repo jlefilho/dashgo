@@ -11,7 +11,7 @@ if (process.env.NODE_ENV === 'development') {
   makeServer()
 }
 
-const queryClient = new QueryClient()
+export const queryClient = new QueryClient()
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
